@@ -117,7 +117,7 @@ const abi = [
         "type": "function"
     }
 ];
-const ABI = abi;
+const ABI = abi.abi;
 
 
 let contract;
@@ -141,8 +141,8 @@ async function connect() {
 }
 async function enterLottery() {
 	if (typeof window.ethereum !== "undefined") {
-        const contractAdd;
-        const ABI;
+        const contractAddress = "0xd9145CCE52D386f254917e481eB44e9943F39138";
+        const abi = ABI;
     }
 }
 
@@ -163,8 +163,6 @@ async function enterLottery() {
         <h2>Participants</h2>
         <ul id="participantsList"></ul>
     </div>
- 
-   
 </body>
 </html>
 

@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Lottery Smart Contract</title>
+    <script src="https://cdn.jsdelivr.net/npm/web3@1.3.0/dist/web3.min.js"></script>
+</head>
+<body>
+    <h1>Lottery Contract</h1>
+    <script>
+        async function connect() {
+        if (typeof window.ethereun != "undefined") {
+        await ethereum.request({method: "eth_requestAccounts"});
+        }
+       }
+    </script>
+    <button id="connectWallet" onclick="connect()">Connect Wallet</button>
+    <div>
+        <h2>Enter Lottery</h2>
+        <button id="enterLottery">Enter</button>
+        <p>Cost to enter: 0.01 ETH</p>
+        
+    </div>
+    <div id="responseMessage"></div>
+    <div>
+        <h2>Pick a Winner (Only Manager)</h2>
+        <button id="pickWinner">Pick Winner</button>
+    </div>
+    <div id="winnerDisplay"></div>
+    <div>
+        <h2>Participants</h2>
+        <ul id="participantsList"></ul>
+    </div>
+ 
+    <script src="app.js"></script>
+</body>
+</html>
+ 

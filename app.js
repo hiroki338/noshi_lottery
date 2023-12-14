@@ -118,11 +118,23 @@ window.addEventListener('load', async () => {
  
 function initApp() {
     contract = new web3.eth.Contract(abi, contractAddress);
- 
-    document.getElementById('connectWallet').addEventListener('click', async () => {
-        accounts = await web3.eth.getAccounts();
-        console.log("Connected account:", accounts[0]);
+
+    const connectWalletButton = document.getElementById('connectWallet');
+
+    connectWalletButton.addEventListener('click', async () => {
+        try {
+            accounts = await web3.eth.getAccounts();
+            console.log("Connected account:", accounts[0]);
+
+            // Update button text when wallet is connected
+            connectWalletButton.textContent = `Connected: ${accounts[0]}`;
+            connectWalletButton.disabled = true; // Optionally disable the button after connecting
+        } catch (error) {
+            console.error("Error connecting wallet:", error.message);
+        }
     });
+}
+
  
     document.getElementById('enterLottery').addEventListener('click', () => {
         contract.methods.enter().send({ from: accounts[0], value: web3.utils.toWei("0.01", "ether") })

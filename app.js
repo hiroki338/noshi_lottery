@@ -3,7 +3,6 @@ let web3;
 let accounts; 
 
 
-import { ethers } from "https://cdnjs.cloudflare.com/ajax/libs/ethers/6.7.0/ethers.min.js";
 
 
 async function connect() {
@@ -123,6 +122,8 @@ async function enterLottery() {
             "type": "function"
         }
     ];
+    <script type="module"></script>
+import { ethers } from "https://cdnjs.cloudflare.com/ajax/libs/ethers/6.7.0/ethers.min.js";
     const provider = new ethers.providers.Web3Provider(window.ethereum);
     const signer = provider.getSigner();
     const contract = new ethers.Contract(contractAddress, abi, signer);
@@ -177,7 +178,7 @@ async function enterLottery() {
 		// Update the content of the winnerDisplay element
 		winnerDisplay.innerHTML = `<p>Winner: ${winner}</p>`;
 	}
-	
+	</script>
 module.exports = {
   connect,
   enterLottery,

@@ -18,6 +18,7 @@
     <button id="connectWallet" onclick="connect()">Connect Wallet</button>
     <script>
 const contractAddress = "0xd9145CCE52D386f254917e481eB44e9943F39138";
+const contractAdd = contractAddress;
 const abi = [
     {
         "inputs": [],
@@ -116,6 +117,7 @@ const abi = [
         "type": "function"
     }
 ];
+const ABI = abi;
 
 
 let contract;
@@ -139,6 +141,10 @@ async function connect() {
 }
 async function enterLottery() {
 	if (typeof window.ethereum !== "undefined") {
+        const contractAdd;
+        const ABI;
+    }
+}
 
     </script>
     <div>
@@ -225,4 +231,3 @@ module.exports = {
   pickWinner,
 };
 </script>
-    }

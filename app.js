@@ -120,6 +120,7 @@ async function connect() {
 }
 
 async function enterLottery() {
+    await initApp();
     if (web3 && accounts && accounts.length > 0) {
         try {
             await contract.methods.enter().send({ from: accounts[0], value: web3.utils.toWei("0.01", "ether") });

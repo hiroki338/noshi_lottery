@@ -8,52 +8,21 @@
 </head>
 <body>
     <h1>Lottery Contract</h1>
-    <script>
-        async function connect() {
-            if (typeof window.ethereum !== "undefined") {
-                const accounts = await ethereum.request({ method: "eth_requestAccounts" });
-                const walletAddress = accounts[0];
-    
-                console.log("Wallet connected");
-                console.log("First 5 characters:", walletAddress.slice(0, 5));
-                console.log("Last 5 characters:", walletAddress.slice(-5));
-    
-                // Display truncated wallet address on the browser
-                const truncatedAddress = `${walletAddress.slice(0, 5)}...${walletAddress.slice(-5)}`;
-                document.getElementById("connectWallet").innerText = `Connected (${truncatedAddress})`;
-                document.getElementById("connectWallet").disabled = true; // Optional: Disable the button after connecting
-            }
-        }
-    </script>
-    
     <button id="connectWallet" onclick="connect()">Connect Wallet</button>
-    
-    <script src="app.js"></script>
-    
-    <script>
-        document.addEventListener("DOMContentLoaded", function() {
-            document.getElementById('enterLottery').addEventListener('click', () => {
-                initApp();
-            });
-
-            document.getElementById('pickWinner').addEventListener('click', () => {
-                // Add code to call pickWinner function from app.js
-            });
-        });
-    </script>
-
     <div>
         <h2>Enter Lottery</h2>
-        <button id="enterLottery">Enter</button>
+        <button id="enterLottery" onclick="enterLottery()">Enter</button>
         <p>Cost to enter: 0.01 ETH</p>
     </div>
     <div>
         <h2>Pick a Winner (Only Manager)</h2>
-        <button id="pickWinner">Pick Winner</button>
+        <button id="pickWinner" onclick="pickWinner()">Pick Winner</button>
     </div>
     <div>
         <h2>Participants</h2>
         <ul id="participantsList"></ul>
     </div>
+    <div id="winner"></div>
+    <script src="app.js"></script>
 </body>
 </html>

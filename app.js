@@ -1,134 +1,142 @@
-const contractAddress = "0xd9145CCE52D386f254917e481eB44e9943F39138";
-const abi = [
-    {
-        "inputs": [],
-        "name": "enter",
-        "outputs": [],
-        "stateMutability": "payable",
-        "type": "function"
-    },
-    {
-        "inputs": [],
-        "name": "pickWinner",
-        "outputs": [],
-        "stateMutability": "nonpayable",
-        "type": "function"
-    },
-    {
-        "inputs": [],
-        "name": "getLastWinner",
-        "outputs": [
-            {
-                "internalType": "address payable",
-                "name": "",
-                "type": "address"
-            }
-        ],
-        "stateMutability": "view",
-        "type": "function"
-    },
-    {
-        "inputs": [],
-        "name": "getParticipants",
-        "outputs": [
-            {
-                "internalType": "address payable[]",
-                "name": "",
-                "type": "address[]"
-            }
-        ],
-        "stateMutability": "view",
-        "type": "function"
-    },
-    {
-        "inputs": [],
-        "name": "lastWinner",
-        "outputs": [
-            {
-                "internalType": "address payable",
-                "name": "",
-                "type": "address"
-            }
-        ],
-        "stateMutability": "view",
-        "type": "function"
-    },
-    {
-        "inputs": [],
-        "name": "manager",
-        "outputs": [
-            {
-                "internalType": "address",
-                "name": "",
-                "type": "address"
-            }
-        ],
-        "stateMutability": "view",
-        "type": "function"
-    },
-    {
-        "inputs": [
-            {
-                "internalType": "uint256",
-                "name": "",
-                "type": "uint256"
-            }
-        ],
-        "name": "participants",
-        "outputs": [
-            {
-                "internalType": "address payable",
-                "name": "",
-                "type": "address"
-            }
-        ],
-        "stateMutability": "view",
-        "type": "function"
-    }
-];
-
-let contract;
 let web3;
 let accounts;
+let contract;
 
 async function initApp() {
-    // Check if the web3 object is available
-    if (typeof window.ethereum !== "undefined") {
-        if (typeof Web3 === "undefined") {
-            const Web3 = require("web3");
-            web3 = new Web3(window.ethereum);
-        } else {
-            web3 = new Web3(window.ethereum);
-        }
+    if (typeof window.ethereum !== 'undefined') {
+        web3 = new Web3(window.ethereum);
         accounts = await web3.eth.getAccounts();
+        const contractAddress = "0xd9145CCE52D386f254917e481eB44e9943F39138";
+        const abi = [
+            
+                {
+                    "inputs": [],
+                    "name": "enter",
+                    "outputs": [],
+                    "stateMutability": "payable",
+                    "type": "function"
+                },
+                {
+                    "inputs": [],
+                    "name": "pickWinner",
+                    "outputs": [],
+                    "stateMutability": "nonpayable",
+                    "type": "function"
+                },
+                {
+                    "inputs": [],
+                    "stateMutability": "nonpayable",
+                    "type": "constructor"
+                },
+                {
+                    "inputs": [],
+                    "name": "getLastWinner",
+                    "outputs": [
+                        {
+                            "internalType": "address payable",
+                            "name": "",
+                            "type": "address"
+                        }
+                    ],
+                    "stateMutability": "view",
+                    "type": "function"
+                },
+                {
+                    "inputs": [],
+                    "name": "getParticipants",
+                    "outputs": [
+                        {
+                            "internalType": "address payable[]",
+                            "name": "",
+                            "type": "address[]"
+                        }
+                    ],
+                    "stateMutability": "view",
+                    "type": "function"
+                },
+                {
+                    "inputs": [],
+                    "name": "lastWinner",
+                    "outputs": [
+                        {
+                            "internalType": "address payable",
+                            "name": "",
+                            "type": "address"
+                        }
+                    ],
+                    "stateMutability": "view",
+                    "type": "function"
+                },
+                {
+                    "inputs": [],
+                    "name": "manager",
+                    "outputs": [
+                        {
+                            "internalType": "address",
+                            "name": "",
+                            "type": "address"
+                        }
+                    ],
+                    "stateMutability": "view",
+                    "type": "function"
+                },
+                {
+                    "inputs": [
+                        {
+                            "internalType": "uint256",
+                            "name": "",
+                            "type": "uint256"
+                        }
+                    ],
+                    "name": "participants",
+                    "outputs": [
+                        {
+                            "internalType": "address payable",
+                            "name": "",
+                            "type": "address"
+                        }
+                    ],
+                    "stateMutability": "view",
+                    "type": "function"
+                }
+            
+        ];
         contract = new web3.eth.Contract(abi, contractAddress);
+    } else {
+        console.error("Web3 not available. Please install MetaMask or another Ethereum provider.");
     }
-
-    document.getElementById('enterLottery').addEventListener('click', () => {
-        if (typeof web3 !== "undefined" && typeof accounts !== "undefined") {
-            contract.methods.enter().send({ from: accounts[0], value: web3.utils.toWei("0.01", "ether") })
-                .then(() => {
-                    console.log("Entered the lottery!");
-                    updateParticipantsList(); // Display participants after each new entry
-                })
-                .catch(console.error);
-        } else {
-            console.error("Web3 not available. Please install MetaMask or another Ethereum provider.");
-        }
-    });
-
-    document.getElementById('pickWinner').addEventListener('click', () => {
-        contract.methods.pickWinner().send({ from: accounts[0] })
-            .then(() => {
-                console.log("Winner picked!");
-                displayWinner(); // Display the winner
-                updateParticipantsList(); // Update participants after picking the winner
-            })
-            .catch(console.error);
-    });
 }
 
-// Function to display participants in the browser HTML
+async function connect() {
+    await initApp();
+    if (accounts && accounts.length > 0) {
+        const truncatedAddress = `${accounts[0].slice(0, 5)}...${accounts[0].slice(-5)}`;
+        document.getElementById("connectWallet").innerText = `Connected (${truncatedAddress})`;
+        document.getElementById("connectWallet").disabled = true;
+    }
+}
+
+async function enterLottery() {
+    if (web3 && accounts && accounts.length > 0) {
+        await contract.methods.enter().send({ from: accounts[0], value: web3.utils.toWei("0.01", "ether") });
+        console.log("Entered the lottery!");
+        updateParticipantsList();
+    } else {
+        console.error("Web3 not available. Please connect your wallet.");
+    }
+}
+
+async function pickWinner() {
+    if (web3 && accounts && accounts.length > 0) {
+        await contract.methods.pickWinner().send({ from: accounts[0] });
+        console.log("Winner picked!");
+        displayWinner();
+        updateParticipantsList();
+    } else {
+        console.error("Web3 not available. Please connect your wallet.");
+    }
+}
+
 function updateParticipantsList() {
     contract.methods.getParticipants().call()
         .then(displayParticipants)

@@ -1,97 +1,95 @@
-        const contractAddress = "0xd9145CCE52D386f254917e481eB44e9943F39138";
+        const contractAddress = "0xD6C05318010D8d4c9d3EA06a3bDEB14A08327072";
         const abi = [
-            
-                {
-                    "inputs": [],
-                    "name": "enter",
-                    "outputs": [],
-                    "stateMutability": "payable",
-                    "type": "function"
-                },
-                {
-                    "inputs": [],
-                    "name": "pickWinner",
-                    "outputs": [],
-                    "stateMutability": "nonpayable",
-                    "type": "function"
-                },
-                {
-                    "inputs": [],
-                    "stateMutability": "nonpayable",
-                    "type": "constructor"
-                },
-                {
-                    "inputs": [],
-                    "name": "getLastWinner",
-                    "outputs": [
-                        {
-                            "internalType": "address payable",
-                            "name": "",
-                            "type": "address"
-                        }
-                    ],
-                    "stateMutability": "view",
-                    "type": "function"
-                },
-                {
-                    "inputs": [],
-                    "name": "getParticipants",
-                    "outputs": [
-                        {
-                            "internalType": "address payable[]",
-                            "name": "",
-                            "type": "address[]"
-                        }
-                    ],
-                    "stateMutability": "view",
-                    "type": "function"
-                },
-                {
-                    "inputs": [],
-                    "name": "lastWinner",
-                    "outputs": [
-                        {
-                            "internalType": "address payable",
-                            "name": "",
-                            "type": "address"
-                        }
-                    ],
-                    "stateMutability": "view",
-                    "type": "function"
-                },
-                {
-                    "inputs": [],
-                    "name": "manager",
-                    "outputs": [
-                        {
-                            "internalType": "address",
-                            "name": "",
-                            "type": "address"
-                        }
-                    ],
-                    "stateMutability": "view",
-                    "type": "function"
-                },
-                {
-                    "inputs": [
-                        {
-                            "internalType": "uint256",
-                            "name": "",
-                            "type": "uint256"
-                        }
-                    ],
-                    "name": "participants",
-                    "outputs": [
-                        {
-                            "internalType": "address payable",
-                            "name": "",
-                            "type": "address"
-                        }
-                    ],
-                    "stateMutability": "view",
-                    "type": "function"
-                }
-            
+            {
+                "inputs": [],
+                "name": "enter",
+                "outputs": [],
+                "stateMutability": "payable",
+                "type": "function"
+            },
+            {
+                "inputs": [],
+                "name": "pickWinner",
+                "outputs": [],
+                "stateMutability": "nonpayable",
+                "type": "function"
+            },
+            {
+                "inputs": [],
+                "stateMutability": "nonpayable",
+                "type": "constructor"
+            },
+            {
+                "inputs": [],
+                "name": "getLastWinner",
+                "outputs": [
+                    {
+                        "internalType": "address payable",
+                        "name": "",
+                        "type": "address"
+                    }
+                ],
+                "stateMutability": "view",
+                "type": "function"
+            },
+            {
+                "inputs": [],
+                "name": "getParticipants",
+                "outputs": [
+                    {
+                        "internalType": "address payable[]",
+                        "name": "",
+                        "type": "address[]"
+                    }
+                ],
+                "stateMutability": "view",
+                "type": "function"
+            },
+            {
+                "inputs": [],
+                "name": "lastWinner",
+                "outputs": [
+                    {
+                        "internalType": "address payable",
+                        "name": "",
+                        "type": "address"
+                    }
+                ],
+                "stateMutability": "view",
+                "type": "function"
+            },
+            {
+                "inputs": [],
+                "name": "manager",
+                "outputs": [
+                    {
+                        "internalType": "address",
+                        "name": "",
+                        "type": "address"
+                    }
+                ],
+                "stateMutability": "view",
+                "type": "function"
+            },
+            {
+                "inputs": [
+                    {
+                        "internalType": "uint256",
+                        "name": "",
+                        "type": "uint256"
+                    }
+                ],
+                "name": "participants",
+                "outputs": [
+                    {
+                        "internalType": "address payable",
+                        "name": "",
+                        "type": "address"
+                    }
+                ],
+                "stateMutability": "view",
+                "type": "function"
+            }
         ];
 
         let web3;
@@ -124,7 +122,7 @@ async function connect() {
 async function enterLottery() {
     if (web3 && accounts && accounts.length > 0) {
         try {
-            await contract.methods.Lottery.enter().send({ from: accounts[0], value: web3.utils.toWei("0.01", "ether") });
+            await contract.methods.enter().send({ from: accounts[0], value: web3.utils.toWei("0.01", "ether") });
             console.log("Entered the lottery!");
             updateParticipantsList();
         } catch (error) {
@@ -138,7 +136,7 @@ async function enterLottery() {
 async function pickWinner() {
     if (web3 && accounts && accounts.length > 0) {
         try {
-            await contract.methods.Lottery.pickWinner().send({ from: accounts[0] });
+            await contract.methods.pickWinner().send({ from: accounts[0] });
             console.log("Winner picked!");
             displayWinner();
             updateParticipantsList();

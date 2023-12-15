@@ -105,8 +105,12 @@ let accounts;
     async function initApp() {
         // Check if the web3 object is available
         if (typeof window.ethereum !== "undefined") {
-            // Initialize web3 using the injected Ethereum provider
-            web3 = new Web3(window.ethereum);
+            if (typeof Web3 === "undefined") {
+                const Web3 = require("web3");
+                web3 = new Web3(window.ethereum);
+            } else {
+                web3 = new Web3(window.ethereum);
+            }   
             accounts = await web3.eth.getAccounts();
             contract = new web3.eth.Contract(abi, contractAddress);
     

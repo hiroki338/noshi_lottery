@@ -1,11 +1,3 @@
-let web3;
-let accounts;
-let contract;
-
-async function initApp() {
-    if (typeof window.ethereum !== 'undefined') {
-        web3 = new Web3(window.ethereum);
-        accounts = await web3.eth.getAccounts();
         const contractAddress = "0xd9145CCE52D386f254917e481eB44e9943F39138";
         const abi = [
             
@@ -101,7 +93,20 @@ async function initApp() {
                 }
             
         ];
-        contract = new web3.eth.Contract(abi, contractAddress);
+
+        let web3;
+        let accounts;
+        let contract;
+        
+        async function initApp() {
+            if (typeof window.ethereum !== 'undefined') {
+                web3 = new Web3(window.ethereum);
+                accounts = await web3.eth.getAccounts();
+                contract = new web3.eth.Contract(abi, contractAddress);
+
+                console.log("Wallet connected");
+                console.log("First 5 characters:", accounts[0].slice(0, 5));
+                console.log("Last 5 characters:", accounts[0].slice(-5));
     } else {
         console.error("Web3 not available. Please install MetaMask or another Ethereum provider.");
     }
@@ -126,7 +131,7 @@ async function enterLottery() {
             console.error("Error entering the lottery:", error.message);
         }
     } else {
-        console.error("Web3 not available. Please connect your wallet.");
+        console.error("Web3 not available. or accounts not initialized.");
     }
 }
 

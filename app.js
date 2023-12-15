@@ -124,7 +124,7 @@ async function connect() {
 async function enterLottery() {
     if (web3 && accounts && accounts.length > 0) {
         try {
-            await contract.methods.enter().send({ from: accounts[0], value: web3.utils.toWei("0.01", "ether") });
+            await contract.methods.Lottery.enter().send({ from: accounts[0], value: web3.utils.toWei("0.01", "ether") });
             console.log("Entered the lottery!");
             updateParticipantsList();
         } catch (error) {
@@ -138,7 +138,7 @@ async function enterLottery() {
 async function pickWinner() {
     if (web3 && accounts && accounts.length > 0) {
         try {
-            await contract.methods.pickWinner().send({ from: accounts[0] });
+            await contract.methods.Lottery.pickWinner().send({ from: accounts[0] });
             console.log("Winner picked!");
             displayWinner();
             updateParticipantsList();
@@ -151,13 +151,13 @@ async function pickWinner() {
 }
 
 function updateParticipantsList() {
-    contract.methods.getParticipants().call()
+    contract.methods.Lottery.getParticipants().call()
         .then(displayParticipants)
         .catch(error => console.error("Error updating participants list:", error.message));
 }
 
 function displayWinner() {
-    contract.methods.getLastWinner().call()
+    contract.methods.Lottery.getLastWinner().call()
         .then(winner => {
             const winnerElement = document.getElementById('winner');
             winnerElement.innerHTML = `<p>Winner: ${winner}</p>`;

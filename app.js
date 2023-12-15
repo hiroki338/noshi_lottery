@@ -102,38 +102,11 @@ let contract;
 let web3;
 let accounts;
  
-window.addEventListener('load', async () => {
-    if(window.ethereum) {
-        web3 = new Web3(window.ethereum);
-        try {
-            await window.ethereum.enable();
-            initApp();
-        } catch (error) {
-            console.error("Access to your Ethereum account rejected.");
-        }
-    } else {
-        console.error("Please install MetaMask!");
-    }
-});
+
  
 function initApp() {
     contract = new web3.eth.Contract(abi, contractAddress);
 
-    const connectWalletButton = document.getElementById('connectWallet');
-
-    connectWalletButton.addEventListener('click', async () => {
-        try {
-            accounts = await web3.eth.getAccounts();
-            console.log("Connected account:", accounts[0]);
-
-            // Update button text when wallet is connected
-            connectWalletButton.textContent = `Connected: ${accounts[0]}`;
-            connectWalletButton.disabled = true; // Optionally disable the button after connecting
-        } catch (error) {
-            console.error("Error connecting wallet:", error.message);
-        }
-    });
-}
 
  
     document.getElementById('enterLottery').addEventListener('click', () => {
@@ -156,4 +129,4 @@ function initApp() {
 function displayParticipants(participants) {
     const participantsList = document.getElementById('participantsList');
     participantsList.innerHTML = participants.map(address => `<li>${address}</li>`).join('');}
-
+}

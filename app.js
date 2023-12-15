@@ -106,27 +106,44 @@ let accounts;
  
 function initApp() {
     contract = new web3.eth.Contract(abi, contractAddress);
-
-
  
-    document.getElementById('enterLottery').addEventListener('click', () => {
+        document.getElementById('enterLottery').addEventListener('click', () => {
         contract.methods.enter().send({ from: accounts[0], value: web3.utils.toWei("0.01", "ether") })
-        .then(() => console.log("Entered the lottery!"))
-        .catch(console.error);
+            .then(() => {
+                console.log("Entered the lottery!");
+                updateParticipantsList(); // Display participants after each new entry
+            })
+            .catch(console.error);
     });
  
     document.getElementById('pickWinner').addEventListener('click', () => {
         contract.methods.pickWinner().send({ from: accounts[0] })
-        .then(() => console.log("Winner picked!"))
-        .catch(console.error);
+            .then(() => {
+                console.log("Winner picked!");
+                displayWinner(); // Display the winner
+                updateParticipantsList(); // Update participants after picking the winner
+            })
+            .catch(console.error);
     });
  
-    // Fetch and display participants
-    contract.methods.getParticipants().call()
-    .then(displayParticipants)
-    .catch(console.error);
- 
-function displayParticipants(participants) {
-    const participantsList = document.getElementById('participantsList');
-    participantsList.innerHTML = participants.map(address => `<li>${address}</li>`).join('');}
+    // Function to display participants in the browser HTML
+    function updateParticipantsList() {
+        contract.methods.getParticipants().call()
+            .then(displayParticipants)
+            .catch(console.error);
+    }
+
+    function displayWinner() {
+        contract.methods.getLastWinner().call()
+            .then(winner => {
+                const winnerElement = document.getElementById('winner');
+                winnerElement.innerHTML = `<p>Winner: ${winner}</p>`;
+            })
+            .catch(console.error);
+    }
+
+    function displayParticipants(participants) {
+        const participantsList = document.getElementById('participantsList');
+        participantsList.innerHTML = participants.map(address => `<li>${address}</li>`).join('');
+    }
 }

@@ -114,17 +114,20 @@ let accounts;
             accounts = await web3.eth.getAccounts();
             contract = new web3.eth.Contract(abi, contractAddress);
     
-            // ... Rest of your initApp code ...
-            document.getElementById('enterLottery').addEventListener('click', () => {
-                contract.methods.enter().send({ from: accounts[0], value: web3.utils.toWei("0.01", "ether") })
-                    .then(() => {
-                        console.log("Entered the lottery!");
-                        updateParticipantsList(); // Display participants after each new entry
-                    })
+        }
+
+    document.getElementById('enterLottery').addEventListener('click', () => {
+        if (typeof web3 !== "undefined" && typeof accounts !== "undefined") {
+            contract.methods.enter().send({ from: accounts[0], value: web3.utils.toWei("0.01", "ether") })
+                .then(() => {
+                    console.log("Entered the lottery!");
+                    updateParticipantsList(); // Display participants after each new entry
+                })
+                .catch(console.error);
         } else {
             console.error("Web3 not available. Please install MetaMask or another Ethereum provider.");
         }
-    }
+    });
  
     document.getElementById('pickWinner').addEventListener('click', () => {
         contract.methods.pickWinner().send({ from: accounts[0] })
@@ -157,3 +160,4 @@ let accounts;
         participantsList.innerHTML = participants.map(address => `<li>${address}</li>`).join('');
     }
 }
+initApp();

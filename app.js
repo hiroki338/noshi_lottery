@@ -152,7 +152,6 @@ function initApp() {
     contract.methods.getParticipants().call()
     .then(displayParticipants)
     .catch(console.error);
-}
  
 function displayParticipants(participants) {
     const participantsList = document.getElementById('participantsList');

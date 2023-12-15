@@ -102,19 +102,25 @@ let contract;
 let web3;
 let accounts;
  
-
- 
-function initApp() {
-    contract = new web3.eth.Contract(abi, contractAddress);
- 
-        document.getElementById('enterLottery').addEventListener('click', () => {
-        contract.methods.enter().send({ from: accounts[0], value: web3.utils.toWei("0.01", "ether") })
-            .then(() => {
-                console.log("Entered the lottery!");
-                updateParticipantsList(); // Display participants after each new entry
-            })
-            .catch(console.error);
-    });
+    async function initApp() {
+        // Check if the web3 object is available
+        if (typeof window.ethereum !== "undefined") {
+            // Initialize web3 using the injected Ethereum provider
+            web3 = new Web3(window.ethereum);
+            accounts = await web3.eth.getAccounts();
+            contract = new web3.eth.Contract(abi, contractAddress);
+    
+            // ... Rest of your initApp code ...
+            document.getElementById('enterLottery').addEventListener('click', () => {
+                contract.methods.enter().send({ from: accounts[0], value: web3.utils.toWei("0.01", "ether") })
+                    .then(() => {
+                        console.log("Entered the lottery!");
+                        updateParticipantsList(); // Display participants after each new entry
+                    })
+        } else {
+            console.error("Web3 not available. Please install MetaMask or another Ethereum provider.");
+        }
+    }
  
     document.getElementById('pickWinner').addEventListener('click', () => {
         contract.methods.pickWinner().send({ from: accounts[0] })

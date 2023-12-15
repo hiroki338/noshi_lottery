@@ -118,9 +118,13 @@ async function connect() {
 
 async function enterLottery() {
     if (web3 && accounts && accounts.length > 0) {
-        await contract.methods.enter().send({ from: accounts[0], value: web3.utils.toWei("0.01", "ether") });
-        console.log("Entered the lottery!");
-        updateParticipantsList();
+        try {
+            await contract.methods.enter().send({ from: accounts[0], value: web3.utils.toWei("0.01", "ether") });
+            console.log("Entered the lottery!");
+            updateParticipantsList();
+        } catch (error) {
+            console.error("Error entering the lottery:", error.message);
+        }
     } else {
         console.error("Web3 not available. Please connect your wallet.");
     }
@@ -128,10 +132,14 @@ async function enterLottery() {
 
 async function pickWinner() {
     if (web3 && accounts && accounts.length > 0) {
-        await contract.methods.pickWinner().send({ from: accounts[0] });
-        console.log("Winner picked!");
-        displayWinner();
-        updateParticipantsList();
+        try {
+            await contract.methods.pickWinner().send({ from: accounts[0] });
+            console.log("Winner picked!");
+            displayWinner();
+            updateParticipantsList();
+        } catch (error) {
+            console.error("Error picking the winner:", error.message);
+        }
     } else {
         console.error("Web3 not available. Please connect your wallet.");
     }
@@ -140,7 +148,7 @@ async function pickWinner() {
 function updateParticipantsList() {
     contract.methods.getParticipants().call()
         .then(displayParticipants)
-        .catch(console.error);
+        .catch(error => console.error("Error updating participants list:", error.message));
 }
 
 function displayWinner() {
@@ -149,7 +157,7 @@ function displayWinner() {
             const winnerElement = document.getElementById('winner');
             winnerElement.innerHTML = `<p>Winner: ${winner}</p>`;
         })
-        .catch(console.error);
+        .catch(error => console.error("Error displaying winner:", error.message));
 }
 
 function displayParticipants(participants) {

@@ -151,7 +151,7 @@ async function pickWinner() {
 }
 
 function updateParticipantsList() {
-    contract.methods.Lottery.getParticipants().call()
+    contract.methods.getParticipants().call()
         .then(displayParticipants)
         .catch(error => console.error("Error updating participants list:", error.message));
 }

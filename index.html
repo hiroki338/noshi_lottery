@@ -11,13 +11,23 @@
     <script>
         async function connect() {
             if (typeof window.ethereum !== "undefined") {
-                await ethereum.request({ method: "eth_requestAccounts" });
-                document.getElementById("connectWallet").innerText = "Connected";
+                const accounts = await ethereum.request({ method: "eth_requestAccounts" });
+                const walletAddress = accounts[0];
+    
+                console.log("Wallet connected");
+                console.log("First 5 characters:", walletAddress.slice(0, 5));
+                console.log("Last 5 characters:", walletAddress.slice(-5));
+    
+                // Display truncated wallet address on the browser
+                const truncatedAddress = `${walletAddress.slice(0, 5)}...${walletAddress.slice(-5)}`;
+                document.getElementById("connectWallet").innerText = `Connected (${truncatedAddress})`;
                 document.getElementById("connectWallet").disabled = true; // Optional: Disable the button after connecting
             }
         }
     </script>
+    
     <button id="connectWallet" onclick="connect()">Connect Wallet</button>
+    
     <div>
         <h2>Enter Lottery</h2>
         <button id="enterLottery" onclick="initApp()">Enter</button>

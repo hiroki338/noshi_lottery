@@ -1,4 +1,4 @@
-        const contractAddress = "0x74c96F7238632196e01743a3Ec46DE72A6eDe010";
+        const contractAddress = "0xd8b934580fcE35a11B58C6D73aDeE468a2833fa8";
         const abi = [
             {
                 "inputs": [],
@@ -21,38 +21,12 @@
             },
             {
                 "inputs": [],
-                "name": "getLastWinner",
+                "name": "getPlayers",
                 "outputs": [
                     {
-                        "internalType": "address payable",
-                        "name": "",
-                        "type": "address"
-                    }
-                ],
-                "stateMutability": "view",
-                "type": "function"
-            },
-            {
-                "inputs": [],
-                "name": "getParticipants",
-                "outputs": [
-                    {
-                        "internalType": "address payable[]",
+                        "internalType": "address[]",
                         "name": "",
                         "type": "address[]"
-                    }
-                ],
-                "stateMutability": "view",
-                "type": "function"
-            },
-            {
-                "inputs": [],
-                "name": "lastWinner",
-                "outputs": [
-                    {
-                        "internalType": "address payable",
-                        "name": "",
-                        "type": "address"
                     }
                 ],
                 "stateMutability": "view",
@@ -79,10 +53,10 @@
                         "type": "uint256"
                     }
                 ],
-                "name": "participants",
+                "name": "players",
                 "outputs": [
                     {
-                        "internalType": "address payable",
+                        "internalType": "address",
                         "name": "",
                         "type": "address"
                     }

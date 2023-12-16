@@ -141,7 +141,7 @@ function updateParticipantsList() {
 }
 
 function displayWinner() {
-    contract.methods.Lottery.getLastWinner().call()
+    contract.methods.Lottery.getwinner().call()
         .then(winner => {
             const winnerElement = document.getElementById('winner');
             winnerElement.innerHTML = `<p>Winner: ${winner}</p>`;

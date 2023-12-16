@@ -110,7 +110,7 @@ async function enterLottery() {
         try {
             await contract.methods.enter().send({ from: accounts[0], value: web3.utils.toWei("0.01", "ether") });
             console.log("Entered the lottery!");
-            updateParticipantsList();
+            updatePlayersList();
         } catch (error) {
             console.error("Error entering the lottery:", error.message);
         }
@@ -125,7 +125,7 @@ async function pickWinner() {
             await contract.methods.pickWinner().send({ from: accounts[0] });
             console.log("Winner picked!");
             displayWinner();
-            updateParticipantsList();
+            updatePlayersList();
         } catch (error) {
             console.error("Error picking the winner:", error.message);
         }
@@ -134,10 +134,10 @@ async function pickWinner() {
     }
 }
 
-function updateParticipantsList() {
-    contract.methods.getParticipants().call()
-        .then(displayParticipants)
-        .catch(error => console.error("Error updating participants list:", error.message));
+function updatePlayersList() {
+    contract.methods.getPlayers().call()
+        .then(displayPlayers)
+        .catch(error => console.error("Error updating players list:", error.message));
 }
 
 function displayWinner() {
@@ -149,9 +149,9 @@ function displayWinner() {
         .catch(error => console.error("Error displaying winner:", error.message));
 }
 
-function displayParticipants(participants) {
-    const participantsList = document.getElementById('participantsList');
-    participantsList.innerHTML = participants.map(address => `<li>${address}</li>`).join('');
+function displayPlayers(playersList) {
+    const playersList = document.getElementById('playersList');
+    playersList.innerHTML = players.map(address => `<li>${address}</li>`).join('');
 }
 
 initApp();

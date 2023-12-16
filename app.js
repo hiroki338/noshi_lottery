@@ -149,7 +149,7 @@ function displayWinner() {
         .catch(error => console.error("Error displaying winner:", error.message));
 }
 
-function displayPlayers(playersList) {
+function displayPlayers(players) {
     const playersList = document.getElementById('playersList');
     playersList.innerHTML = players.map(address => `<li>${address}</li>`).join('');
 }

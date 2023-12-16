@@ -1,4 +1,4 @@
-        const contractAddress = "0xd8b934580fcE35a11B58C6D73aDeE468a2833fa8";
+        const contractAddress = "0xf8e81D47203A594245E36C48e151709F0C19fBe8";
         const abi = [
             {
                 "inputs": [],
@@ -34,6 +34,24 @@
             },
             {
                 "inputs": [],
+                "name": "getWinnerInfo",
+                "outputs": [
+                    {
+                        "internalType": "address",
+                        "name": "",
+                        "type": "address"
+                    },
+                    {
+                        "internalType": "uint256",
+                        "name": "",
+                        "type": "uint256"
+                    }
+                ],
+                "stateMutability": "view",
+                "type": "function"
+            },
+            {
+                "inputs": [],
                 "name": "manager",
                 "outputs": [
                     {
@@ -59,6 +77,32 @@
                         "internalType": "address",
                         "name": "",
                         "type": "address"
+                    }
+                ],
+                "stateMutability": "view",
+                "type": "function"
+            },
+            {
+                "inputs": [],
+                "name": "winner",
+                "outputs": [
+                    {
+                        "internalType": "address",
+                        "name": "",
+                        "type": "address"
+                    }
+                ],
+                "stateMutability": "view",
+                "type": "function"
+            },
+            {
+                "inputs": [],
+                "name": "winnings",
+                "outputs": [
+                    {
+                        "internalType": "uint256",
+                        "name": "",
+                        "type": "uint256"
                     }
                 ],
                 "stateMutability": "view",
@@ -141,13 +185,17 @@ function updatePlayersList() {
 }
 
 function displayWinner() {
-    contract.methods.Lottery.getwinner().call()
-        .then(winner => {
+    contract.methods.getWinnerInfo().call()
+        .then(result => {
+            const winnerAddress = result[0];
+            const winnings = result[1];
+
             const winnerElement = document.getElementById('winner');
-            winnerElement.innerHTML = `<p>Winner: ${winner}</p>`;
+            winnerElement.innerHTML = `<p>Winner: ${winnerAddress}</p><p>Winnings: ${winnings} wei</p>`;
         })
         .catch(error => console.error("Error displaying winner:", error.message));
 }
+
 
 function displayPlayers(players) {
     const playersList = document.getElementById('playersList');

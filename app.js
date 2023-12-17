@@ -261,43 +261,43 @@ function updatePlayersList() {
         .catch(error => console.error("Error updating players list:", error.message));
 }
 
-function displayWinner() {
-    contract.methods.getWinnerInfo().call()
+function displayPlayers() {
+    contract.methods.getPlayersCount().call()
+        .then(count => {
+            const playersElement = document.getElementById('players');
+            playersElement.innerHTML = "<p>Players:</p>";
+
+            for (let i = 0; i < count; i++) {
+                contract.methods.getPlayerByIndex(i).call()
+                    .then(player => {
+                        playersElement.innerHTML += `<p>${player}</p>`;
+                    })
+                    .catch(error => console.error("Error displaying players:", error.message));
+            }
+        })
+        .catch(error => console.error("Error getting player count:", error.message));
+}
+
+function displayLatestWinner() {
+    contract.methods.getLatestWinner().call()
+        .then(winner => {
+            const winnerElement = document.getElementById('latestWinner');
+            winnerElement.innerHTML = `<p>Latest Winner: ${winner}</p>`;
+        })
+        .catch(error => console.error("Error displaying latest winner:", error.message));
+}
+
+function displayLatestWinnerInfo() {
+    contract.methods.getLatestWinnerInfo().call()
         .then(result => {
             const winnerAddress = result[0];
             const winnings = result[1];
 
-            const winnerElement = document.getElementById('winner');
-            winnerElement.innerHTML = `<p>Winner: ${winnerAddress}</p><p>Winnings: ${winnings} wei</p>`;
+            const winnerInfoElement = document.getElementById('latestWinnerInfo');
+            winnerInfoElement.innerHTML = `<p>Latest Winner: ${winnerAddress}</p><p>Winnings: ${winnings} wei</p>`;
         })
-        .catch(error => console.error("Error displaying winner:", error.message));
+        .catch(error => console.error("Error displaying latest winner info:", error.message));
 }
 
-// New functions for displaying players
-async function displayPlayers() {
-    try {
-        const count = await contract.methods.getPlayersCount().call();
-        const playersElement = document.getElementById('players');
-        playersElement.innerHTML = "<p>Players:</p>";
-
-        for (let i = 0; i < count; i++) {
-            const player = await contract.methods.getPlayerByIndex(i).call();
-            playersElement.innerHTML += `<p>${player}</p>`;
-        }
-    } catch (error) {
-        console.error("Error displaying players:", error.message);
-    }
-}
-
-// New function for displaying the latest winner
-async function displayLatestWinner() {
-    try {
-        const winner = await contract.methods.getLatestWinner().call();
-        const winnerElement = document.getElementById('latestWinner');
-        winnerElement.innerHTML = `<p>Latest Winner: ${winner}</p>`;
-    } catch (error) {
-        console.error("Error displaying latest winner:", error.message);
-    }
-}
 
 initApp();

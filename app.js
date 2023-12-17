@@ -1,4 +1,4 @@
-        const contractAddress = "0xD7ACd2a9FD159E69Bb102A1ca21C9a3e3A5F771B";
+        const contractAddress = "0xd9145CCE52D386f254917e481eB44e9943F39138";
         const abi = [
             {
                 "inputs": [],
@@ -21,6 +21,56 @@
             },
             {
                 "inputs": [],
+                "name": "getLatestWinner",
+                "outputs": [
+                    {
+                        "internalType": "address payable",
+                        "name": "",
+                        "type": "address"
+                    }
+                ],
+                "stateMutability": "view",
+                "type": "function"
+            },
+            {
+                "inputs": [],
+                "name": "getLatestWinnerInfo",
+                "outputs": [
+                    {
+                        "internalType": "address payable",
+                        "name": "",
+                        "type": "address"
+                    },
+                    {
+                        "internalType": "uint256",
+                        "name": "",
+                        "type": "uint256"
+                    }
+                ],
+                "stateMutability": "view",
+                "type": "function"
+            },
+            {
+                "inputs": [
+                    {
+                        "internalType": "uint256",
+                        "name": "index",
+                        "type": "uint256"
+                    }
+                ],
+                "name": "getPlayerByIndex",
+                "outputs": [
+                    {
+                        "internalType": "address",
+                        "name": "",
+                        "type": "address"
+                    }
+                ],
+                "stateMutability": "view",
+                "type": "function"
+            },
+            {
+                "inputs": [],
                 "name": "getPlayers",
                 "outputs": [
                     {
@@ -34,13 +84,40 @@
             },
             {
                 "inputs": [],
-                "name": "getWinnerInfo",
+                "name": "getPlayersCount",
                 "outputs": [
                     {
-                        "internalType": "address",
+                        "internalType": "uint256",
+                        "name": "",
+                        "type": "uint256"
+                    }
+                ],
+                "stateMutability": "view",
+                "type": "function"
+            },
+            {
+                "inputs": [
+                    {
+                        "internalType": "uint256",
+                        "name": "",
+                        "type": "uint256"
+                    }
+                ],
+                "name": "lotteryHistory",
+                "outputs": [
+                    {
+                        "internalType": "address payable",
                         "name": "",
                         "type": "address"
-                    },
+                    }
+                ],
+                "stateMutability": "view",
+                "type": "function"
+            },
+            {
+                "inputs": [],
+                "name": "lotteryId",
+                "outputs": [
                     {
                         "internalType": "uint256",
                         "name": "",
@@ -200,6 +277,33 @@ function displayWinner() {
 function displayPlayers(players) {
     const playersList = document.getElementById('playersList');
     playersList.innerHTML = players.map(address => `<li>${address}</li>`).join('');
-}
-
+  }
+  
+  // New functions for displaying players
+  async function displayPlayers() {
+    try {
+      const count = await contract.methods.getPlayersCount().call();
+      const playersElement = document.getElementById('players');
+      playersElement.innerHTML = "<p>Players:</p>";
+  
+      for (let i = 0; i < count; i++) {
+        const player = await contract.methods.getPlayerByIndex(i).call();
+        playersElement.innerHTML += `<p>${player}</p>`;
+      }
+    } catch (error) {
+      console.error("Error displaying players:", error.message);
+    }
+  }
+  
+  // New function for displaying the latest winner
+  async function displayLatestWinner() {
+    try {
+      const winner = await contract.methods.getLatestWinner().call();
+      const winnerElement = document.getElementById('latestWinner');
+      winnerElement.innerHTML = `<p>Latest Winner: ${winner}</p>`;
+    } catch (error) {
+      console.error("Error displaying latest winner:", error.message);
+    }
+  }
+  
 initApp();

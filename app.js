@@ -188,29 +188,29 @@
         ];
 
         let web3;
-        let accounts;
-        let contract;
-        
-        async function initApp() {
-            if (typeof window.ethereum !== 'undefined') {
-                try {
-                    if (typeof web3 !== "undefined") {
-                        web3 = new Web3(window.ethereum);
-                    } else {
-                        web3 = new Web3(window.ethereum);
-                    }
-                accounts = await web3.eth.getAccounts();
-                contract = new web3.eth.Contract(abi, contractAddress);
+let accounts;
+let contract;
 
-                document.getElementById('enterLottery').disabled = false;
-                document.getElementById('pickWinner').disabled = false;
-
-                console.log("Wallet connected");
-                console.log("First 5 characters:", accounts[0].slice(0, 5));
-                console.log("Last 5 characters:", accounts[0].slice(-5));
-            } catch (error) {
-                console.error("Error connecting to web3:", error);
+async function initApp() {
+    if (typeof window.ethereum !== 'undefined') {
+        try {
+            if (typeof web3 !== "undefined") {
+                web3 = new Web3(window.ethereum);
+            } else {
+                web3 = new Web3(window.ethereum);
             }
+            accounts = await web3.eth.getAccounts();
+            contract = new web3.eth.Contract(abi, contractAddress);
+
+            document.getElementById('enterLottery').disabled = false;
+            document.getElementById('pickWinner').disabled = false;
+
+            console.log("Wallet connected");
+            console.log("First 5 characters:", accounts[0].slice(0, 5));
+            console.log("Last 5 characters:", accounts[0].slice(-5));
+        } catch (error) {
+            console.error("Error connecting to web3:", error);
+        }
     } else {
         console.error("Web3 not available. Please install MetaMask or another Ethereum provider.");
     }
@@ -273,37 +273,31 @@ function displayWinner() {
         .catch(error => console.error("Error displaying winner:", error.message));
 }
 
+// New functions for displaying players
+async function displayPlayers() {
+    try {
+        const count = await contract.methods.getPlayersCount().call();
+        const playersElement = document.getElementById('players');
+        playersElement.innerHTML = "<p>Players:</p>";
 
-function displayPlayers(players) {
-    const playersList = document.getElementById('playersList');
-    playersList.innerHTML = players.map(address => `<li>${address}</li>`).join('');
-  }
-  
-  // New functions for displaying players
-  async function displayPlayers() {
-    try {
-      const count = await contract.methods.getPlayersCount().call();
-      const playersElement = document.getElementById('players');
-      playersElement.innerHTML = "<p>Players:</p>";
-  
-      for (let i = 0; i < count; i++) {
-        const player = await contract.methods.getPlayerByIndex(i).call();
-        playersElement.innerHTML += `<p>${player}</p>`;
-      }
+        for (let i = 0; i < count; i++) {
+            const player = await contract.methods.getPlayerByIndex(i).call();
+            playersElement.innerHTML += `<p>${player}</p>`;
+        }
     } catch (error) {
-      console.error("Error displaying players:", error.message);
+        console.error("Error displaying players:", error.message);
     }
-  }
-  
-  // New function for displaying the latest winner
-  async function displayLatestWinner() {
+}
+
+// New function for displaying the latest winner
+async function displayLatestWinner() {
     try {
-      const winner = await contract.methods.getLatestWinner().call();
-      const winnerElement = document.getElementById('latestWinner');
-      winnerElement.innerHTML = `<p>Latest Winner: ${winner}</p>`;
+        const winner = await contract.methods.getLatestWinner().call();
+        const winnerElement = document.getElementById('latestWinner');
+        winnerElement.innerHTML = `<p>Latest Winner: ${winner}</p>`;
     } catch (error) {
-      console.error("Error displaying latest winner:", error.message);
+        console.error("Error displaying latest winner:", error.message);
     }
-  }
-  
+}
+
 initApp();

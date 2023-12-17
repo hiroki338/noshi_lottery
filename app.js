@@ -256,7 +256,7 @@ async function pickWinner() {
 }
 
 function updatePlayersList() {
-    contract.methods.getPlayers().call()
+    contract.methods.getPlayers().call()({ gas: 3000000 })
         .then(displayPlayers)
         .catch(error => console.error("Error updating players list:", error.message));
 }
